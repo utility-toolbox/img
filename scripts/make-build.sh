@@ -11,7 +11,16 @@ mkdir -p "build/"
 [[ -f "build/requirements.txt" ]] && rm "build/requirements.txt"
 [[ -d "build/src/" ]] && rm -rf "build/src/"
 
+PIPENV_INSTALLED=false
+if ! python3 -c 'import pipenv' &> /dev/null; then
+  python3 -m pip install --isolated --no-input --disable-pip-version-check pipenv
+fi
+
 PIPENV_VERBOSITY=-1 pipenv requirements > build/requirements.txt
+
+if [ $PIPENV_INSTALLED = true ]; then
+  python3 -m pip uninstall --isolated --no-input --disable-pip-version-check pipenv
+fi
 
 # copy source code
 cp -r src/img/ build/src/
