@@ -1,18 +1,31 @@
 # img
 cli to automatically download a collection of images or scrape them from a website
 
+> [!NOTE]
 > successor/version 2 of [PlayerG9/img](https://github.com/PlayerG9/img)
 
-
-## installation
-
 > [!CAUTION]
+> This project is in an early phase and may be unstable or some features are missing.
+
+<!-- TOC -->
+* [img](#img)
+  * [Installation](#installation)
+  * [Updating](#updating)
+  * [Uninstall / Cleanup](#uninstall--cleanup)
+<!-- TOC -->
+
+## Installation
+
+> [!WARNING]
 > This installation process is designed for **linux**.
 > If you are under **Windows** you should use a [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 > If you are under **macOS** it should work but no guaranty.
 > Some steps may need to be adjusted depending on your operating system.
 
-> [!INFO]
+> [!IMPORTANT]
+> This program requires some dependencies during the installation or for running.
+> These dependencies are installed on most linux distributions.
+> But if a step fails this could help.
 > ```shell
 > sudo apt install python3 git bash
 > ```
@@ -28,7 +41,7 @@ $ img --version
 0.0.0
 ```
 
-## updating
+## Updating
 
 ```shell
 $ cd ~/.local/src/toolbox-img/
@@ -39,7 +52,7 @@ $ img --version
 0.0.0
 ```
 
-## uninstall/cleanup
+## Uninstall / Cleanup
 
 ```shell
 # uninstall
