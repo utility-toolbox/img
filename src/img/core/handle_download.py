@@ -7,6 +7,7 @@ from pathlib import Path
 
 import requests
 import rich.progress
+from rich.markup import escape
 
 from ..util import get_free_filename, extract_filename, extract_content_size
 from ..constants import FileConflictStrategy
@@ -21,7 +22,7 @@ def handle_download(response: requests.Response, progress: rich.progress.Progres
     tmpfile: Path = filepath.with_stem(f".{filepath.stem}")
     if filepath.exists():
         if on_conflict is FileConflictStrategy.skip:
-            progress.console.print(f"[gray]Skipping {response.url} as {filepath.name} already exists[/]")
+            progress.console.print(f"[gray]Skipping {escape(response.url)} as {escape(filepath.name)} already exists[/]")
             return  # cancel download
         elif on_conflict is FileConflictStrategy.rename:
             filepath = Path(get_free_filename(filepath))
@@ -44,4 +45,4 @@ def handle_download(response: requests.Response, progress: rich.progress.Progres
     filepath.unlink(missing_ok=True)  # remove old
     tmpfile.rename(filepath)  # tmpfile -> file
     progress.remove_task(task_id)  # remove now unnecessary progress bar
-    progress.console.print(f"{filepath} is done")  # but keep a log
+    progress.console.print(f"{escape(filepath.name)} is done")  # but keep a log
