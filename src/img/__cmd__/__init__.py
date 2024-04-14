@@ -2,4 +2,4 @@
 r"""
 
 """
-from . import get
+from . import wget

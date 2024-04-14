@@ -18,7 +18,7 @@ parser.add_argument('-v', '--version', action='version', version=__version__)
 subparsers = parser.add_subparsers()
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter)
-get_parser.set_defaults(cmd=__cmd__.get.__cmd__)
+get_parser.set_defaults(cmd=__cmd__.wget.__cmd__)
 get_parser.add_argument('-c', '--concurrent', type=int, default=3,
                         help="Number of concurrent downloads")
 get_parser.add_argument('--on-conflict', type=constants.FileConflictStrategy.from_string,
