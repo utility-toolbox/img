@@ -3,8 +3,9 @@ r"""
 
 """
 import re
-import typing as t
+import os
 import os.path as p
+import typing as t
 import urllib.parse as urlparse
 from requests import Response
 
@@ -13,6 +14,9 @@ __all__ = ['extract_content_size', 'extract_filename', 'get_free_filename', 'is_
 
 
 def extract_content_size(response: Response) -> t.Optional[int]:
+    r"""
+    attempts to extract the content size of a given response
+    """
     try:
         content_size = response.headers['Content-Length']
     except KeyError:
@@ -23,6 +27,9 @@ def extract_content_size(response: Response) -> t.Optional[int]:
 
 
 def extract_filename(response: Response) -> str:
+    r"""
+    extracts the filename from the 'Content-Disposition' header with fallback to the url-path or finally the hostname
+    """
     content_disposition = response.headers.get('Content-Disposition')
     if content_disposition:
         match = next(re.finditer(r'filename=(.+)', content_disposition), None)
@@ -37,16 +44,23 @@ def extract_filename(response: Response) -> str:
     return urlparse.unquote(url.hostname)
 
 
-def get_free_filename(fn: str) -> str:
+def get_free_filename(fn: t.Union[str, os.PathLike]) -> str:
+    r"""
+    find a free filename given a filename path
+    """
     i = 0
-    name, ext = p.splitext(fn)
-    while p.isfile(fn):
+    dirname, filename = p.split(fn)
+    name, ext = p.splitext(filename)
+    while p.isfile(p.join(dirname, filename)) or p.isfile(p.join(dirname, f".{filename}")):
         i += 1
-        fn = f"{name} ({i}){ext}"
-    return fn
+        filename = f"{name} ({i}){ext}"
+    return p.join(dirname, filename)
 
 
 def is_image_response(response: Response) -> bool:
+    r"""
+    checks if the content type is 'image/*'
+    """
     try:
         content_type: str = response.headers["Content-Type"]
     except KeyError:
