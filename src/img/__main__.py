@@ -3,7 +3,7 @@ r"""
 
 """
 import argparse as ap
-from . import __version__, get as img_get
+from . import __version__, __cmd__
 try:
     import runpy
     import rich.traceback
@@ -18,7 +18,7 @@ parser.add_argument('-v', '--version', action='version', version=__version__)
 subparsers = parser.add_subparsers()
 
 get_parser = subparsers.add_parser("get")
-get_parser.set_defaults(cmd=img_get.__cmd__)
+get_parser.set_defaults(cmd=__cmd__.get.__cmd__)
 get_parser.add_argument('-c', '--concurrent', type=int, default=3,
                         help="Number of concurrent downloads")
 get_parser.add_argument('--overwrite', action=ap.BooleanOptionalAction, default=False,

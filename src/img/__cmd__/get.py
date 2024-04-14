@@ -8,6 +8,9 @@ import rich
 from ..core import downloader
 
 
+__all__ = ['__cmd__']
+
+
 def __cmd__(urls: t.Iterable[str], concurrent: int, overwrite: bool) -> None:
     console = rich.get_console()
 
