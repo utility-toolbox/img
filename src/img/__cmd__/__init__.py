@@ -2,4 +2,7 @@
 r"""
 
 """
-from . import wget
+from . import (
+    collect,
+    wget,
+)
