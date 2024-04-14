@@ -17,7 +17,7 @@ PIPENV_VERBOSITY=-1 pipenv requirements > build/requirements.txt
 cp -r src/img/ build/src/
 
 # install dependencies into (new) copied source-code directory
-python3 -m pip install -q -r build/requirements.txt -t build/src/ --compile --disable-pip-version-check
+python3 -m pip install --isolated --no-input --disable-pip-version-check --requirement build/requirements.txt --target build/src/ --compile
 rm -rf build/src/*.dist-info
 
 # cleanup of necessary packages
