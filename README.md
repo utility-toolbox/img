@@ -29,6 +29,11 @@ cli to automatically download a collection of images or scrape them from a websi
 > ```shell
 > sudo apt install python3 git bash
 > ```
+> this project uses [pipenv](https://pypi.org/project/pipenv/) for dependency management.
+> currently you need this installed for the build-script to work.
+> ```shell
+> $ python3 -m pip install --user pipenv
+> ```
 
 ```shell
 $ mkdir -p ~/.local/src/
