@@ -6,12 +6,13 @@ import typing as t
 import requests
 import rich
 from ..core import downloader
+from ..constants import FileConflictStrategy
 
 
 __all__ = ['__cmd__']
 
 
-def __cmd__(urls: t.Iterable[str], concurrent: int, overwrite: bool) -> None:
+def __cmd__(urls: t.Iterable[str], concurrent: int, on_conflict: FileConflictStrategy) -> None:
     console = rich.get_console()
 
     def gen():
@@ -25,4 +26,4 @@ def __cmd__(urls: t.Iterable[str], concurrent: int, overwrite: bool) -> None:
             console.print(f"[green]{response.status_code} {url}[/]")
             yield response
 
-    downloader(gen(), concurrent=concurrent, overwrite=overwrite)
+    downloader(gen(), concurrent=concurrent, on_conflict=on_conflict)

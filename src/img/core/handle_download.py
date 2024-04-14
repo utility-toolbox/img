@@ -9,21 +9,27 @@ import requests
 import rich.progress
 
 from ..util import get_free_filename, extract_filename, extract_content_size
+from ..constants import FileConflictStrategy
 
 
 __all__ = ['handle_download']
 
 
-# todo: catch errors
 def handle_download(response: requests.Response, progress: rich.progress.Progress, canceled: threading.Event,
-                    overwrite: bool) -> None:
-    filename: str = extract_filename(response)
-    if not overwrite:
-        filename: str = get_free_filename(filename)
-
-    filepath: Path = Path(filename)
-    filepath.touch()  # ensure it exist for other threads/downloads
+                    on_conflict: FileConflictStrategy) -> None:
+    filepath: Path = Path(extract_filename(response))
     tmpfile: Path = filepath.with_stem(f".{filepath.stem}")
+    if filepath.exists():
+        if on_conflict is FileConflictStrategy.skip:
+            progress.console.print(f"[gray]Skipping {response.url} as {filepath.name} already exists[/]")
+            return  # cancel download
+        elif on_conflict is FileConflictStrategy.rename:
+            filepath = Path(get_free_filename(filepath))
+            filepath = filepath.with_name(get_free_filename(filepath.name))
+            tmpfile: Path = filepath.with_stem(f".{filepath.stem}")
+        # elif on_conflict is FileConflictStrategy.replace:
+        #     pass  # no need for this
+
     task_id: rich.progress.TaskID\
         = progress.add_task(description=filepath.name, start=True, total=extract_content_size(response))
 

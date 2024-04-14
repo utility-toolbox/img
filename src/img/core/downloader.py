@@ -11,6 +11,7 @@ import rich.progress
 import rich.traceback
 
 from ..util import get_progress_columns
+from ..constants import FileConflictStrategy
 from .catch_sigint import CatchSignInt
 from .handle_download import handle_download
 
@@ -18,7 +19,8 @@ from .handle_download import handle_download
 __all__ = ['downloader']
 
 
-def downloader(gen: t.Iterator[requests.Response], concurrent: int = 4, overwrite: bool = False):
+def downloader(gen: t.Iterator[requests.Response], concurrent: int = 4,
+               on_conflict: FileConflictStrategy = FileConflictStrategy.rename):
     with (
         CatchSignInt() as canceled,
         rich.progress.Progress(*get_progress_columns(),
@@ -32,10 +34,10 @@ def downloader(gen: t.Iterator[requests.Response], concurrent: int = 4, overwrit
             if canceled.is_set():
                 break
 
-            fut: Future = pool.submit(handle_download,
-                                      response=response, progress=progress, canceled=canceled, overwrite=overwrite)
+            job: Future = pool.submit(handle_download,
+                                      response=response, progress=progress, canceled=canceled, on_conflict=on_conflict)
 
-            @fut.add_done_callback
+            @job.add_done_callback
             def done(future: Future) -> None:
                 counter.release()
                 error = future.exception()
