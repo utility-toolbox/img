@@ -27,6 +27,9 @@ def downloader(gen: t.Iterator[requests.Response], concurrent: int = 4, overwrit
     ):
         counter = threading.Semaphore(concurrent)
         for response in gen:
+            if canceled.is_set():
+                break
+
             counter.acquire()
             fut: Future = pool.submit(handle_download,
                                       response=response, progress=progress, canceled=canceled, overwrite=overwrite)
