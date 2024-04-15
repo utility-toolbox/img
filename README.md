@@ -9,10 +9,67 @@ cli to automatically download a collection of images or scrape them from a websi
 
 <!-- TOC -->
 * [img](#img)
+  * [Help](#help)
+    * [`img`](#img-1)
+    * [`img collect`](#img-collect)
+    * [`img get`](#img-get)
   * [Installation](#installation)
   * [Updating](#updating)
   * [Uninstall / Cleanup](#uninstall--cleanup)
 <!-- TOC -->
+
+## Help
+
+> [!WARNING]
+> Help may be outdated. Use `img --help` and `img <cmd> --help`.
+
+### `img`
+
+```text
+usage: img [-h] [-v] {collect,get} ...
+
+positional arguments:
+  {collect,get}
+    collect      Collects images. Manually add 1+ {0} to specify which numbers should increment for the next url
+    get          similar to the `wget` program. used to download provided images
+
+options:
+  -h, --help     show this help message and exit
+  -v, --version  show program's version number and exit
+```
+
+### `img collect`
+
+```text
+usage: img collect [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--max-skip MAX_SKIP] urls [urls ...]
+
+positional arguments:
+  urls                  URLs to collect from
+
+options:
+  -h, --help            show this help message and exit
+  -c CONCURRENT, --concurrent CONCURRENT
+                        Number of concurrent downloads (default: 3)
+  --on-conflict {rename,skip,replace}
+                        How to handle conflict of filenames during download (default: rename)
+  --max-skip MAX_SKIP   How many url can be failing before stopping searching (default: 0)
+```
+
+### `img get`
+
+```text
+usage: img get [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] urls [urls ...]
+
+positional arguments:
+  urls                  URLs to download
+
+options:
+  -h, --help            show this help message and exit
+  -c CONCURRENT, --concurrent CONCURRENT
+                        Number of concurrent downloads (default: 3)
+  --on-conflict {rename,skip,replace}
+                        How to handle conflict of filenames during download (default: rename)
+```
 
 ## Installation
 
