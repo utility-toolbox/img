@@ -4,14 +4,7 @@ r"""
 """
 import argparse as ap
 from . import __version__, __cmd__, constants
-
-try:
-    import runpy
-    import rich.traceback
-
-    rich.traceback.install(show_locals=True, suppress=[runpy])
-except ModuleNotFoundError:
-    pass
+from . import _install_traceback  # noqa
 
 parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter)
 parser.set_defaults(cmd=parser.print_help)
