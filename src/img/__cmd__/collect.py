@@ -8,6 +8,7 @@ import urllib.parse as urlparse
 import requests
 import rich
 from rich.markup import escape
+from .._typing import *
 from ..constants import FileConflictStrategy
 from ..core import downloader
 
@@ -15,7 +16,8 @@ from ..core import downloader
 __all__ = ['__cmd__']
 
 
-def __cmd__(urls: str, concurrent: int, on_conflict: FileConflictStrategy, max_skip: int) -> None:
+def __cmd__(urls: str, max_skip: int,
+            concurrent: int, on_conflict: FileConflictStrategy, headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
     console = rich.get_console()
     console._highlight = False
 
@@ -26,7 +28,7 @@ def __cmd__(urls: str, concurrent: int, on_conflict: FileConflictStrategy, max_s
             fail_count = 0
 
             for url in iter_urls(base=raw_url):
-                response = requests.get(url=url, stream=True, timeout=(10, 30))
+                response = requests.get(url=url, stream=True, headers=dict(headers), timeout=timeout)
                 if not response.ok:
                     console.print(f"[red]{response.status_code} {escape(url)}[/]", highlight=False)
                     fail_count += 1

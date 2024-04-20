@@ -8,6 +8,7 @@ import bs4
 import requests
 import rich
 from rich.markup import escape
+from .._typing import *
 from ..constants import FileConflictStrategy
 from ..core import downloader
 from ..util import is_image_response
@@ -16,14 +17,15 @@ from ..util import is_image_response
 __all__ = ['__cmd__']
 
 
-def __cmd__(site: str, concurrent: int, on_conflict: FileConflictStrategy, linked: bool) -> None:
+def __cmd__(site: T_URL, linked: bool,
+            concurrent: int, on_conflict: FileConflictStrategy, headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
     console = rich.get_console()
     console._highlight = False
 
     def gen():
         nonlocal site
 
-        response = requests.get(site)
+        response = requests.get(site, headers=dict(headers), timeout=timeout)
         response.raise_for_status()
         content_type = response.headers.get('Content-Type', "")
         if not content_type != "text/html":
@@ -46,7 +48,7 @@ def __cmd__(site: str, concurrent: int, on_conflict: FileConflictStrategy, linke
         urls = [url for url in urls if url.startswith("http")]
 
         for url in urls:
-            response = requests.get(url=url, stream=True, timeout=(10, 30))
+            response = requests.get(url=url, stream=True, headers=dict(headers), timeout=timeout)
             if not response.ok:
                 console.print(f"[red]{response.status_code} {escape(url)}[/]")
                 continue

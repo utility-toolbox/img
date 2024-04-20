@@ -2,10 +2,10 @@
 r"""
 
 """
-import typing as t
 import requests
 import rich
 from rich.markup import escape
+from .._typing import *
 from ..constants import FileConflictStrategy
 from ..core import downloader
 
@@ -13,7 +13,8 @@ from ..core import downloader
 __all__ = ['__cmd__']
 
 
-def __cmd__(urls: t.Iterable[str], concurrent: int, on_conflict: FileConflictStrategy) -> None:
+def __cmd__(urls: T_URLS,
+            concurrent: int, on_conflict: FileConflictStrategy, headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
     console = rich.get_console()
     console._highlight = False
 
@@ -21,7 +22,7 @@ def __cmd__(urls: t.Iterable[str], concurrent: int, on_conflict: FileConflictStr
         nonlocal urls
 
         for url in urls:
-            response = requests.get(url=url, stream=True, timeout=(10, 30))
+            response = requests.get(url=url, stream=True, headers=dict(headers), timeout=timeout)
             if not response.ok:
                 console.print(f"[red]{response.status_code} {escape(url)}[/]")
                 continue
