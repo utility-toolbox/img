@@ -84,12 +84,7 @@ options:
 > These dependencies are installed on most linux distributions.
 > But if a step fails this could help.
 > ```shell
-> sudo apt install python3 git bash
-> ```
-> this project uses [pipenv](https://pypi.org/project/pipenv/) for dependency management.
-> currently you need this installed for the build-script to work.
-> ```shell
-> $ python3 -m pip install --user pipenv
+> sudo apt install python3 python3-pip git bash
 > ```
 
 ```shell
@@ -97,8 +92,8 @@ $ mkdir -p ~/.local/src/
 $ cd ~/.local/src/
 $ git clone https://github.com/utility-toolbox/img.git toolbox-img
 $ cd toolbox-img/
-$ ./scripts/make-build.sh
-$ mv ./build/img ~/.local/bin/
+$ make
+$ make install
 $ img --version
 0.0.0
 ```
@@ -108,8 +103,8 @@ $ img --version
 ```shell
 $ cd ~/.local/src/toolbox-img/
 $ git pull
-$ ./scripts/make-build.sh
-$ mv -f ./build/img ~/.local/bin/
+$ make
+$ make install
 $ img --version
 0.0.0
 ```
@@ -117,10 +112,10 @@ $ img --version
 ## Uninstall / Cleanup
 
 ```shell
-# uninstall
-$ rm ~/.local/bin/img
+# uninstall the program
+$ make uninstall
 # cleanup build files
-$ rm -rf ~/.local/src/toolbox-img/build/*
-# cleanup repository
+$ make clean
+# cleanup/removes the repository
 $ rm -rf ~/.local/src/toolbox-img/
 ```
