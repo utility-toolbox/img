@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 r"""
-
+cli to automatically download a collection of images or scrape them from a website
 """
 import argparse as ap
 from . import __version__, __cmd__, constants
@@ -23,7 +23,7 @@ def add_common_headers(p: ap.ArgumentParser) -> None:
                    help="Add the referer header")
 
 
-parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter)
+parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter, description=__doc__)
 parser.set_defaults(cmd=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version=__version__)
 subparsers = parser.add_subparsers()
