@@ -16,7 +16,7 @@ log "Cleanup of previous files"
 
 
 ROFF_GOT_INSTALLED=false
-if  ! command -v pipenv &> /dev/null; then
+if  ! command -v roff &> /dev/null; then
   log "Installing roff to create man-pages"
   python3 -m pip install --user --isolated --no-input --disable-pip-version-check roff
   ROFF_GOT_INSTALLED=true
