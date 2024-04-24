@@ -11,9 +11,9 @@ __all__ = ['CatchSignInt']
 
 
 class CatchSignInt:
-    _event: t.Optional[threading.Event] = None
+    _event: t.Optional['threading.Event'] = None
 
-    def __enter__(self) -> threading.Event:
+    def __enter__(self) -> 'threading.Event':
         self._event = threading.Event()
         self._override_handler()
         return self._event

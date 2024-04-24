@@ -5,7 +5,6 @@ cli to automatically download a collection of images or scrape them from a websi
 import argparse as ap
 import argcomplete
 from . import __version__, __cmd__, constants
-from . import _install_traceback  # noqa
 from .__cli_util__ import *
 
 

@@ -6,9 +6,8 @@ import threading
 import typing as t
 from concurrent.futures import ThreadPoolExecutor, Future
 
-import requests
-import rich.progress
-import rich.traceback
+if t.TYPE_CHECKING:
+    import requests
 
 from ..util import get_progress_columns
 from ..constants import FileConflictStrategy
@@ -19,8 +18,11 @@ from .handle_download import handle_download
 __all__ = ['downloader']
 
 
-def downloader(gen: t.Iterator[requests.Response], concurrent: int = 4,
-               on_conflict: FileConflictStrategy = FileConflictStrategy.rename):
+def downloader(gen: t.Iterator['requests.Response'], concurrent: int = 4,
+               on_conflict: 'FileConflictStrategy' = FileConflictStrategy.rename):
+    import rich.progress
+    import rich.traceback
+
     with (
         CatchSignInt() as canceled,
         rich.progress.Progress(*get_progress_columns(),

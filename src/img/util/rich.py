@@ -2,13 +2,13 @@
 r"""
 
 """
-import rich.progress
 
 
 __all__ = ['get_progress_columns']
 
 
 def get_progress_columns():
+    import rich.progress
     yield rich.progress.TextColumn("[progress.description]{task.description}")
     yield rich.progress.BarColumn(bar_width=None)
     yield rich.progress.TimeElapsedColumn()

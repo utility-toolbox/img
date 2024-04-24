@@ -2,12 +2,7 @@
 r"""
 
 """
-import re
 import typing as t
-import urllib.parse as urlparse
-import requests
-import rich
-from rich.markup import escape
 from .._typing import *
 from ..constants import FileConflictStrategy
 from ..core import downloader
@@ -17,7 +12,11 @@ __all__ = ['__cmd__']
 
 
 def __cmd__(urls: str, max_skip: int,
-            concurrent: int, on_conflict: FileConflictStrategy, headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
+            concurrent: int, on_conflict: 'FileConflictStrategy', headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
+    import rich
+    from rich.markup import escape
+    import requests
+
     console = rich.get_console()
     console._highlight = False
 
@@ -46,6 +45,8 @@ def iter_urls(base: str) -> t.Iterator[str]:
     r"""
     infinitely generate next url based on incrementing {0} parts in the url
     """
+    import re
+
     url_template = prepare_url(url=base)
 
     def repl(match: re.Match) -> str:
@@ -63,6 +64,9 @@ def prepare_url(url: str) -> str:
     r"""
     adds {0} around the last number in the url-path if not already present anywhere.
     """
+    import re
+    import urllib.parse as urlparse
+
     # already prepared
     if re.search(r"\{\d+}", url) is not None:
         return url

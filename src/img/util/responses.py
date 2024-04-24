@@ -6,14 +6,14 @@ import re
 import os
 import os.path as p
 import typing as t
-import urllib.parse as urlparse
-from requests import Response
+if t.TYPE_CHECKING:
+    from requests import Response
 
 
 __all__ = ['extract_content_size', 'extract_filename', 'get_free_filename', 'is_image_response']
 
 
-def extract_content_size(response: Response) -> t.Optional[int]:
+def extract_content_size(response: 'Response') -> t.Optional[int]:
     r"""
     attempts to extract the content size of a given response
     """
@@ -26,10 +26,12 @@ def extract_content_size(response: Response) -> t.Optional[int]:
     return content_size
 
 
-def extract_filename(response: Response) -> str:
+def extract_filename(response: 'Response') -> str:
     r"""
     extracts the filename from the 'Content-Disposition' header with fallback to the url-path or finally the hostname
     """
+    import urllib.parse as urlparse
+
     content_disposition = response.headers.get('Content-Disposition')
     if content_disposition:
         match = next(re.finditer(r'filename=(.+)', content_disposition), None)
@@ -57,7 +59,7 @@ def get_free_filename(fn: t.Union[str, os.PathLike]) -> str:
     return p.join(dirname, filename)
 
 
-def is_image_response(response: Response) -> bool:
+def is_image_response(response: 'Response') -> bool:
     r"""
     checks if the content type is 'image/*'
     """

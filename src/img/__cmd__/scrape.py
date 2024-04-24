@@ -3,11 +3,6 @@ r"""
 
 """
 import typing as t
-import urllib.parse as urlparse
-import bs4
-import requests
-import rich
-from rich.markup import escape
 from .._typing import *
 from ..constants import FileConflictStrategy
 from ..core import downloader
@@ -19,6 +14,12 @@ __all__ = ['__cmd__']
 
 def __cmd__(site: T_URL, linked: bool,
             concurrent: int, on_conflict: FileConflictStrategy, headers: T_HEADERS, timeout: T_TIMEOUT) -> None:
+    import urllib.parse as urlparse
+    import bs4
+    import requests
+    import rich
+    from rich.markup import escape
+
     console = rich.get_console()
     console._highlight = False
 

@@ -2,12 +2,13 @@
 r"""
 
 """
+import typing as t
 import threading
 from pathlib import Path
 
-import requests
-import rich.progress
-from rich.markup import escape
+if t.TYPE_CHECKING:
+    import requests
+    import rich.progress
 
 from ..util import get_free_filename, extract_filename, extract_content_size
 from ..constants import FileConflictStrategy
@@ -16,8 +17,11 @@ from ..constants import FileConflictStrategy
 __all__ = ['handle_download']
 
 
-def handle_download(response: requests.Response, progress: rich.progress.Progress, canceled: threading.Event,
-                    on_conflict: FileConflictStrategy) -> None:
+def handle_download(response: 'requests.Response', progress: 'rich.progress.Progress', canceled: 'threading.Event',
+                    on_conflict: 'FileConflictStrategy') -> None:
+    import rich.progress
+    from rich.markup import escape
+
     filepath: Path = Path(extract_filename(response))
     tmpfile: Path = filepath.with_stem(f".{filepath.stem}")
     if filepath.exists():
