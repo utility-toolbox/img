@@ -19,6 +19,14 @@ img(1) -- cli to automatically download a collection of images or scrape them fr
 
 ### `img scrape`
 
+## SHELL-COMPLETION
+
+To get shell-completion you have to add the following line at the end of your `~/.bashrc`.
+
+```shell
+eval "$(img --shell-complete)"
+```
+
 ## BUGS
 
 https://github.com/utility-toolbox/img/issues

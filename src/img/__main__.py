@@ -3,6 +3,7 @@ r"""
 cli to automatically download a collection of images or scrape them from a website
 """
 import argparse as ap
+import argcomplete
 from . import __version__, __cmd__, constants
 from . import _install_traceback  # noqa
 from .__cli_util__ import *
@@ -26,6 +27,9 @@ def add_common_headers(p: ap.ArgumentParser) -> None:
 parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter, description=__doc__)
 parser.set_defaults(cmd=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version=__version__)
+parser.add_argument('--shell-complete', action=AutocompleteAction,
+                    # help="Generates an auto-complete shell script. Use with `eval \"$(...)\"`")
+                    help=ap.SUPPRESS)
 subparsers = parser.add_subparsers()
 
 collect_parser = subparsers.add_parser("collect", formatter_class=ap.ArgumentDefaultsHelpFormatter,
@@ -37,7 +41,7 @@ add_common_headers(p=collect_parser)
 collect_parser.add_argument('--max-skip', type=int, default=0,
                             help="How many url can be failing before stopping searching")
 collect_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
-                            help="URLs to collect from")
+                            help="URLs to collect from").completer = argcomplete.completers.SuppressCompleter()
 
 scrape_parser = subparsers.add_parser("scrape", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                       help="Scrapes images from given URL")
@@ -46,14 +50,14 @@ add_common_headers(p=scrape_parser)
 scrape_parser.add_argument('--linked', action=ap.BooleanOptionalAction,
                            help="whether to attempt to download <a href=\"...\"><img/></a> urls")
 scrape_parser.add_argument("site",
-                           help="Site to scrape")
+                           help="Site to scrape").completer = argcomplete.completers.SuppressCompleter()
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                    help="similar to the `wget` program. used to download provided images")
 get_parser.set_defaults(cmd=__cmd__.wget.__cmd__)
 add_common_headers(p=get_parser)
 get_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
-                        help="URLs to download")
+                        help="URLs to download").completer = argcomplete.completers.SuppressCompleter()
 
 
 def main():
@@ -63,4 +67,5 @@ def main():
 
 
 if __name__ == '__main__':
+    argcomplete.autocomplete(parser)
     main()
