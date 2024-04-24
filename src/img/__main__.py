@@ -17,7 +17,7 @@ def add_common_headers(p: ap.ArgumentParser) -> None:
     p.add_argument('--timeout', type=parse_timeout, default=(10, 30),
                    help="Specify timeout. Either 'x.y' for general timeout"
                         " or 'a.b:c.d' for connect:read timeouts")
-    p.add_argument('--header', action='append', dest='headers', type=parse_header,
+    p.add_argument('--header', action='append', dest='headers', default=[], type=parse_header,
                    help="Add an additional header")
     p.add_argument('--referer', action='append', dest='headers', type=parse_referer,
                    help="Add the referer header")
