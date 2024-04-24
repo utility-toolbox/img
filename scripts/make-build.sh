@@ -10,9 +10,9 @@ function log() {
 mkdir -p "build/"
 
 log "Cleanup of previous build files"
-[[ -f "build/img" ]] && rm "build/img"
-[[ -f "build/requirements.txt" ]] && rm "build/requirements.txt"
-[[ -d "build/src/" ]] && rm -rf "build/src/"
+[[ -f build/img ]] && rm build/img
+[[ -f build/requirements.txt ]] && rm build/requirements.txt
+[[ -d build/src/ ]] && rm -rf build/src/
 
 PIPENV_GOT_INSTALLED=false
 if  ! command -v pipenv &> /dev/null; then
@@ -22,7 +22,7 @@ if  ! command -v pipenv &> /dev/null; then
 fi
 
 log "Freezing dependencies"
-PIPENV_VERBOSITY=-1 pipenv requirements > build/requirements.txt
+PIPENV_VERBOSITY=-1 pipenv requirements --exclude-markers > build/requirements.txt
 
 if [ $PIPENV_GOT_INSTALLED = true ]; then
   log "Removing pipenv after freeze"
@@ -30,7 +30,8 @@ if [ $PIPENV_GOT_INSTALLED = true ]; then
 fi
 
 log "Copying source code"
-cp -r src/img/ build/src/
+mkdir -p build/src
+cp -r src/img/ build/src/code/
 
 log "Installing dependencies into build"
 python3 -m pip install --isolated --no-input --disable-pip-version-check --requirement build/requirements.txt --target build/src/ --no-compile
@@ -41,7 +42,8 @@ rm -rf build/src/bin/  # executables/scripts
 rm -rf build/src/pygments/  # syntax highlighting
 rm -rf build/src/markdown_it/  # markdown parser
 rm -rf build/src/urllib3/  # builtin urllib is enough
+rm -rf build/src/bs4/tests/
 
 log "Creating executable build"
-python3 -m zipapp --compress --python "/usr/bin/env -S python3 -X utf8 -X faulthandler -B -O" build/ --main src.__main__:main --output build/img
+python3 -m zipapp --compress --python "/usr/bin/env -S python3 -X utf8 -X faulthandler -B -O" build/src/ --main code.__main__:main --output build/img
 chmod +x build/img
