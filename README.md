@@ -90,7 +90,7 @@ options:
 ```shell
 $ mkdir -p ~/.local/src/
 $ cd ~/.local/src/
-$ git clone https://github.com/utility-toolbox/img.git toolbox-img
+$ git clone --depth 1 https://github.com/utility-toolbox/img.git toolbox-img
 $ cd toolbox-img/
 $ make
 $ make install
