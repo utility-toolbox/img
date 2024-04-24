@@ -4,7 +4,6 @@ r"""
 """
 import threading
 import typing as t
-from concurrent.futures import ThreadPoolExecutor, Future
 
 if t.TYPE_CHECKING:
     import requests
@@ -22,6 +21,7 @@ def downloader(gen: t.Iterator['requests.Response'], concurrent: int = 4,
                on_conflict: 'FileConflictStrategy' = FileConflictStrategy.rename):
     import rich.progress
     import rich.traceback
+    from concurrent.futures import ThreadPoolExecutor, Future
 
     with (
         CatchSignInt() as canceled,

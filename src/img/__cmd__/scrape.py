@@ -5,8 +5,6 @@ r"""
 import typing as t
 from .._typing import *
 from ..constants import FileConflictStrategy
-from ..core import downloader
-from ..util import is_image_response
 
 
 __all__ = ['__cmd__']
@@ -19,6 +17,8 @@ def __cmd__(site: T_URL, linked: bool,
     import requests
     import rich
     from rich.markup import escape
+    from ..core import downloader
+    from ..util import is_image_response
 
     console = rich.get_console()
     console._highlight = False

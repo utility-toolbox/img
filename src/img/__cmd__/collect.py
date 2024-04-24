@@ -5,7 +5,6 @@ r"""
 import typing as t
 from .._typing import *
 from ..constants import FileConflictStrategy
-from ..core import downloader
 
 
 __all__ = ['__cmd__']
@@ -16,6 +15,7 @@ def __cmd__(urls: str, max_skip: int,
     import rich
     from rich.markup import escape
     import requests
+    from ..core import downloader
 
     console = rich.get_console()
     console._highlight = False

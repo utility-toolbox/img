@@ -4,7 +4,6 @@ r"""
 """
 from .._typing import *
 from ..constants import FileConflictStrategy
-from ..core import downloader
 
 
 __all__ = ['__cmd__']
@@ -15,6 +14,7 @@ def __cmd__(urls: T_URLS,
     import requests
     import rich
     from rich.markup import escape
+    from ..core import downloader
 
     console = rich.get_console()
     console._highlight = False
