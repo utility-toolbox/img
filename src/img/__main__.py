@@ -58,8 +58,6 @@ get_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
 
 def main():
     args = vars(parser.parse_args())
-    print(args)
-    return
     cmd = args.pop('cmd')
     return cmd(**args)
 
