@@ -102,6 +102,7 @@ $ img --version
 
 ```shell
 $ cd ~/.local/src/toolbox-img/
+$ make uninstall  # to ensure all old files are removed in case something changed
 $ git pull
 $ make
 $ make install
