@@ -26,7 +26,7 @@ PIPENV_VERBOSITY=-1 pipenv requirements > build/requirements.txt
 
 if [ $PIPENV_GOT_INSTALLED = true ]; then
   log "Removing pipenv after freeze"
-  python3 -m pip uninstall --user --isolated --no-input --disable-pip-version-check pipenv
+  python3 -m pip uninstall --isolated --no-input --disable-pip-version-check pipenv
 fi
 
 log "Copying source code"
