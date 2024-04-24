@@ -27,7 +27,7 @@ roff convert "docs/img.1.md" "$MANPAGE"
 
 if [ $ROFF_GOT_INSTALLED = true ]; then
   log "Removing roff after man-page creation"
-  python3 -m pip uninstall --isolated --no-input --disable-pip-version-check roff
+  python3 -m pip uninstall --yes --isolated --no-input --disable-pip-version-check roff
 fi
 
 log "man-page created ($MANPAGE)"
