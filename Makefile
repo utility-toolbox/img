@@ -36,3 +36,4 @@ clean:
 	rm -rf build/src/
 	rm -rf build/requirements.txt
 	rm -rf build/img
+	rm -rf build/img.?
