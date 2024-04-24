@@ -2,10 +2,10 @@
 default: build
 .PHONY: build install clean
 
-#prefix="/usr"  # global install
-prefix="${HOME}"/.local  # user install
-executable="${prefix}/bin/img"
-manpage="${prefix}/share/man/man1/img.1"
+#prefix=/usr
+prefix=$(HOME)/.local
+executable=$(prefix)/bin/img
+manpage=$(prefix)/share/man/man1/img.1
 
 help:
 	@echo "make"
@@ -19,7 +19,7 @@ help:
 
 build: build/img build/img.1
 
-build/img: $(wildcard **/*.py)
+build/img: $(wildcard src/**/*.py)
 	@bash ./scripts/make-build.sh
 
 build/img.1: docs/img.1.md
@@ -27,10 +27,11 @@ build/img.1: docs/img.1.md
 
 install: | build uninstall
 	cp build/img "${executable}"
+	cp build/img.1 "${manpage}"
 
 uninstall:
-	[ -f "${executable}" ] && rm "${executable}"
-	[ -f "${manpage}" ] && rm "${manpage}"
+	rm -f "${executable}"
+	rm -f "${manpage}"
 
 clean:
 	rm -rf build/src/
