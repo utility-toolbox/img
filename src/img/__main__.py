@@ -52,7 +52,7 @@ scrape_parser.add_argument("site",
                            help="Site to scrape").completer = argcomplete.completers.SuppressCompleter()
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter,
-                                   help="similar to the `wget` program. used to download provided images")
+                                   help="Similar to the `wget` program. Used to download provided images")
 get_parser.set_defaults(cmd=__cmd__.wget.__cmd__)
 add_common_headers(p=get_parser)
 get_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,

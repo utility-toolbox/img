@@ -41,9 +41,27 @@ $`--referer 'https://domain.com'` is shorthand for $`--header 'referer: https://
 
 ### `img collect`
 
+> Collects images.
+
+* see [common options](#common-options)
+
+* $`[--max-skip MAX_SKIP]`:
+How many url can be failing before stopping searching
+
 ### `img get`
 
+> Scrapes images from given URL
+
+* see [common options](#common-options)
+
 ### `img scrape`
+
+> Similar to the `wget` program. Used to download provided images
+
+* see [common options](#common-options)
+
+* $`--linked`, $`--no-linked`:
+whether to attempt to download `<a href="..."><img/></a>` urls
 
 ## SHELL-COMPLETION
 
@@ -52,6 +70,9 @@ To get shell-completion you have to add the following line at the end of your `~
 ```shell
 eval "$(img --shell-complete)"
 ```
+
+> Warning: adding this to the `~/.bashrc` increases the startup-time of your shells significantly.
+> Adding an alias and calling it if needed should be better. (`alias load-img-completion="eval "$(img --shell-complete)""`)
 
 ## BUGS
 
