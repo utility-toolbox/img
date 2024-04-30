@@ -224,12 +224,12 @@
         },
         "roff": {
             "hashes": [
-                "sha256:31bc6c87f7c3d28efa5da866ecbadd806d72794f4fa72edf63d249db5f2384b1",
-                "sha256:b50f9888d4e119b979e1d8780f0ebf6fe8dcf9cf2c8a068bba7feb215c0dbcc6"
+                "sha256:7c633124e37e5e61db65c6b0b81a308c6677363ba8f0503674c8cd439f0c6e50",
+                "sha256:9f3f62a947d5c320b50cfbbf7eccd5d041874b0dbdc0c3bd7251faf6d00bb9fc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==0.3.1"
+            "version": "==0.4.2"
         }
     }
 }
