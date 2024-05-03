@@ -17,8 +17,8 @@ from ..constants import FileConflictStrategy
 __all__ = ['handle_download']
 
 
-def handle_download(response: 'requests.Response', progress: 'rich.progress.Progress', canceled: 'threading.Event',
-                    on_conflict: 'FileConflictStrategy') -> None:
+def handle_download(response: 'requests.Response', head: t.Optional[bytes], progress: 'rich.progress.Progress',
+                    canceled: 'threading.Event', on_conflict: 'FileConflictStrategy') -> None:
     import rich.progress
     from rich.markup import escape
 
@@ -39,6 +39,8 @@ def handle_download(response: 'requests.Response', progress: 'rich.progress.Prog
         = progress.add_task(description=filepath.name, start=True, total=extract_content_size(response))
 
     with open(tmpfile, 'wb') as file:
+        if head:
+            file.write(head)
         for chunk in response.iter_content(chunk_size=1024*10):
             if canceled.is_set():
                 tmpfile.unlink(missing_ok=True)  # is this a problem with file.close()?

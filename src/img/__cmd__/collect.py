@@ -36,7 +36,7 @@ def __cmd__(urls: str, max_skip: int,
                     else:
                         break  # stop
                 console.print(f"[green]{response.status_code} {escape(url)}[/]", highlight=False)
-                yield response
+                yield response, None
 
     downloader(gen(), concurrent=concurrent, on_conflict=on_conflict)
 

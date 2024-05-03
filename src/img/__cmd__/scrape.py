@@ -57,6 +57,6 @@ def __cmd__(site: T_URL, linked: bool,
                 console.print(f"[red]Not-Image: {escape(url)}[/]")
                 continue
             console.print(f"[green]{response.status_code} {escape(url)}[/]")
-            yield response
+            yield response, None
 
     downloader(gen(), concurrent=concurrent, on_conflict=on_conflict)

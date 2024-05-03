@@ -28,6 +28,6 @@ def __cmd__(urls: T_URLS,
                 console.print(f"[red]{response.status_code} {escape(url)}[/]")
                 continue
             console.print(f"[green]{response.status_code} {escape(url)}[/]")
-            yield response
+            yield response, None
 
     downloader(gen(), concurrent=concurrent, on_conflict=on_conflict)
