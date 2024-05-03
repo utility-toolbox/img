@@ -5,7 +5,7 @@ img(1) -- cli to automatically download a collection of images or scrape them fr
 
 - $`img [-h] [-v] {collect,scrape,get} ...`
 - $`img collect [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] [--max-skip MAX_SKIP] urls [urls ...]`
-- $`img scrape [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] [--linked | --no-linked] site`
+- $`img scrape [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] [-l | --linked | --no-linked] [-W [WIDTH]] [-H [HEIGHT]] site`
 - $`img get [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] urls [urls ...]`
 
 ## DESCRIPTION
@@ -60,8 +60,14 @@ How many url can be failing before stopping searching
 
 * see [common options](#common-options)
 
-* $`--linked`, $`--no-linked`:
+* $`-l`, $`--linked`, $`--no-linked`:
 whether to attempt to download `<a href="..."><img/></a>` urls
+
+* $`-W [WIDTH]`, $`--width [WIDTH]`:
+specify width (eg '>500')
+
+* $`-H [HEIGHT]`, $`--height [HEIGHT]`:
+specify height (eg '>500')
 
 ## SHELL-COMPLETION
 
