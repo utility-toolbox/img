@@ -14,16 +14,17 @@
 # https://raw.githubusercontent.com/scardine/image_size/master/get_image_size.py
 import io
 import struct
+import typing as t
 
 
-__all__ = ['UnknownImageFormat', 'get_image_size']
+__all__ = ['UnknownImageFormatError', 'get_image_size']
 
 
-class UnknownImageFormat(Exception):
+class UnknownImageFormatError(Exception):
     pass
 
 
-def get_image_size(total: int, file: io.BytesIO):
+def get_image_size(content: t.Union[t.BinaryIO, bytes]):
     """
     Return (width, height) for a given img file content - no external
     dependencies except the os and struct modules from core
@@ -35,7 +36,13 @@ def get_image_size(total: int, file: io.BytesIO):
     #     width = -1
     #     data = file.read(25)
 
-    data: bytes = file.read(25)
+    if isinstance(content, bytes):
+        data = content
+        content = io.BytesIO(data)
+    else:
+        data: bytes = content.read(25)
+
+    total = len(data)
 
     if (total >= 10) and data[:6] in (b'GIF87a', b'GIF89a'):
         # GIFs
@@ -56,31 +63,31 @@ def get_image_size(total: int, file: io.BytesIO):
     elif (total >= 2) and data.startswith(b'\377\330'):
         # JPEG
         msg = " raised while trying to decode as JPEG."
-        file.seek(0)
-        file.read(2)
-        b = file.read(1)
+        content.seek(0)
+        content.read(2)
+        b = content.read(1)
         try:
             w, h = -1, -1
             while b and ord(b) != 0xDA:
                 while ord(b) != 0xFF:
-                    b = file.read(1)
+                    b = content.read(1)
                 while ord(b) == 0xFF:
-                    b = file.read(1)
+                    b = content.read(1)
                 if 0xC0 <= ord(b) <= 0xC3:
-                    file.read(3)
-                    h, w = struct.unpack(">HH", file.read(4))
+                    content.read(3)
+                    h, w = struct.unpack(">HH", content.read(4))
                     break
                 else:
-                    file.read(int(struct.unpack(">H", file.read(2))[0]) - 2)
-                b = file.read(1)
+                    content.read(int(struct.unpack(">H", content.read(2))[0]) - 2)
+                b = content.read(1)
             width = int(w)
             height = int(h)
         except struct.error:
-            raise UnknownImageFormat("StructError" + msg)
+            raise UnknownImageFormatError("StructError" + msg)
         except ValueError:
-            raise UnknownImageFormat("ValueError" + msg)
+            raise UnknownImageFormatError("ValueError" + msg)
         except Exception as e:
-            raise UnknownImageFormat(e.__class__.__name__ + msg)
+            raise UnknownImageFormatError(e.__class__.__name__ + msg)
     elif (total >= 4) and data.startswith(b'RIFF'):  # WEBP
         r"""
         https://datatracker.ietf.org/doc/html/rfc6386 (search for 'width' and the first describes this)
@@ -92,16 +99,16 @@ def get_image_size(total: int, file: io.BytesIO):
        16 bits      :     (2 bits Horizontal Scale << 14) | Width (14 bits)
        16 bits      :     (2 bits Vertical Scale << 14) | Height (14 bits)
         """
-        file.seek(0)
-        head = file.read(128)  # dunno with size
+        content.seek(0)
+        head = content.read(128)  # dunno with size
         start = head.find(b'\x9d\x01\x2a')
         if start == -1:
-            raise UnknownImageFormat("size-bytes for .webp not found")
+            raise UnknownImageFormatError("size-bytes for .webp not found")
         fmt = "<HH"
         width, height = struct.unpack(fmt, head[start + 3:start + 3 + struct.calcsize(fmt)])
     else:
-        raise UnknownImageFormat(
-            "Sorry, don't know how to get information from this file."
+        raise UnknownImageFormatError(
+            "Sorry, don't know how to get information from this format."
         )
 
     return width, height

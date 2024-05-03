@@ -46,8 +46,14 @@ scrape_parser = subparsers.add_parser("scrape", formatter_class=ap.ArgumentDefau
                                       help="Scrapes images from given URL")
 scrape_parser.set_defaults(cmd=__cmd__.scrape.__cmd__)
 add_common_headers(p=scrape_parser)
-scrape_parser.add_argument('--linked', action=ap.BooleanOptionalAction,
+scrape_parser.add_argument('-l', '--linked', action=ap.BooleanOptionalAction,
                            help="whether to attempt to download <a href=\"...\"><img/></a> urls")
+scrape_parser.add_argument('-W', '--width',
+                           type=constants.SizeComparison, nargs=ap.OPTIONAL, const=">1000",
+                           help="specify width (eg '>500')")
+scrape_parser.add_argument('-H', '--height',
+                           type=constants.SizeComparison, nargs=ap.OPTIONAL, const=">1000",
+                           help="specify height (eg '>500')")
 scrape_parser.add_argument("site",
                            help="Site to scrape").completer = argcomplete.completers.SuppressCompleter()
 
