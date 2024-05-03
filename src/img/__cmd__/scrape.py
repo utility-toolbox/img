@@ -54,7 +54,7 @@ def __cmd__(site: T_URL, linked: bool,
                 console.print(f"[red]{response.status_code} {escape(url)}[/]")
                 continue
             if not is_image_response(response):
-                console.print(f"[red]Not-Image: {escape(url)}[/]")
+                console.print(f"[red]Not an Image: {escape(url)}[/]")
                 continue
             console.print(f"[green]{response.status_code} {escape(url)}[/]")
             yield response, None

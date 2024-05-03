@@ -14,6 +14,7 @@ def __cmd__(urls: T_URLS,
     import requests
     import rich
     from rich.markup import escape
+    from ..util import is_image_response
     from ..core import downloader
 
     console = rich.get_console()
@@ -27,6 +28,8 @@ def __cmd__(urls: T_URLS,
             if not response.ok:
                 console.print(f"[red]{response.status_code} {escape(url)}[/]")
                 continue
+            if not is_image_response(response):
+                console.print(f"[yellow]Not an Image: {escape(url)}[/]")
             console.print(f"[green]{response.status_code} {escape(url)}[/]")
             yield response, None
 

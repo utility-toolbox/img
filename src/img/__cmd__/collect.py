@@ -15,6 +15,7 @@ def __cmd__(urls: str, max_skip: int,
     import rich
     from rich.markup import escape
     import requests
+    from ..util import is_image_response
     from ..core import downloader
 
     console = rich.get_console()
@@ -35,6 +36,8 @@ def __cmd__(urls: str, max_skip: int,
                         continue  # next
                     else:
                         break  # stop
+                if not is_image_response(response):
+                    console.print(f"[yellow]Not an Image: {escape(url)}[/]")
                 console.print(f"[green]{response.status_code} {escape(url)}[/]", highlight=False)
                 yield response, None
 
