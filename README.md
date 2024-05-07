@@ -56,6 +56,31 @@ options:
   --max-skip MAX_SKIP   How many url can be failing before stopping searching (default: 0)
 ```
 
+### `img scrape`
+
+```text
+usage: img scrape [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] [-l | --linked | --no-linked] [-W [WIDTH]] [-H [HEIGHT]] site
+
+positional arguments:
+  site                  Site to scrape
+
+options:
+  -h, --help            show this help message and exit
+  -c CONCURRENT, --concurrent CONCURRENT
+                        Number of concurrent downloads (default: 3)
+  --on-conflict {rename,skip,replace}
+                        How to handle conflict of filenames during download (default: rename)
+  --timeout TIMEOUT     Specify timeout. Either 'x.y' for general timeout or 'a.b:c.d' for connect:read timeouts (default: (10, 30))
+  --header HEADERS      Add an additional header (default: [])
+  --referer HEADERS     Add the referer header (default: None)
+  -l, --linked, --no-linked
+                        whether to attempt to download <a href="..."><img/></a> urls (default: None)
+  -W [WIDTH], --width [WIDTH]
+                        specify width (eg '>500') (default: None)
+  -H [HEIGHT], --height [HEIGHT]
+                        specify height (eg '>500') (default: None)
+```
+
 ### `img get`
 
 ```text
