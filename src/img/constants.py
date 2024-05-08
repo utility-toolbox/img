@@ -51,4 +51,4 @@ class SizeComparison:
         self.value = int(match.group('num'))
 
     def __call__(self, other: int) -> bool:
-        return self.op(self.value, other)
+        return self.op(other, self.value)
