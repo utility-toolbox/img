@@ -1,6 +1,6 @@
 
 default: build
-.PHONY: build install clean
+.PHONY: build install uninstall clean pull clean
 
 #prefix=/usr
 prefix=$(HOME)/.local
@@ -38,3 +38,8 @@ clean:
 	rm -rf build/requirements.txt
 	rm -rf build/img
 	rm -rf build/img.?
+
+pull:
+	git pull
+
+update: | uninstall clean pull build install
