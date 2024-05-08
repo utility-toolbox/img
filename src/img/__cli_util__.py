@@ -6,7 +6,7 @@ import argparse as ap
 from ._typing import *
 
 
-__all__ = ['parse_timeout', 'parse_header', 'parse_referer', 'AutocompleteAction']
+__all__ = ['parse_timeout', 'parse_header', 'parse_referer', 'parse_keyval', 'AutocompleteAction']
 
 
 def parse_timeout(timeout: str) -> T_TIMEOUT:
@@ -25,6 +25,14 @@ def parse_header(header: str) -> T_HEADER_PAIR:
 
 def parse_referer(referer: str) -> T_HEADER_PAIR:
     return "referer", referer
+
+
+def parse_keyval(keyval: str):
+    from ast import literal_eval
+    key, sep, val = keyval.partition('=')
+    if not sep:
+        raise ValueError(f"Invalid key-value format (expected 'key=value' got {keyval!r})")
+    return key, literal_eval(val)
 
 
 class AutocompleteAction(ap.Action):

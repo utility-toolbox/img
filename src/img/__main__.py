@@ -31,8 +31,9 @@ parser.add_argument('--shell-complete', action=AutocompleteAction,
                     help=ap.SUPPRESS)
 subparsers = parser.add_subparsers()
 
+
 collect_parser = subparsers.add_parser("collect", formatter_class=ap.ArgumentDefaultsHelpFormatter,
-                                       help="Collects images.",
+                                       help="Collects images",
                                        description="Manually add one or more {0} to specify which numbers"
                                                    " should increment for the next url")
 collect_parser.set_defaults(cmd=__cmd__.collect.__cmd__)
@@ -41,6 +42,24 @@ collect_parser.add_argument('--max-skip', type=int, default=0,
                             help="How many url can be failing before stopping searching")
 collect_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
                             help="URLs to collect from").completer = argcomplete.completers.SuppressCompleter()
+
+
+merge_parser = subparsers.add_parser("merge", formatter_class=ap.ArgumentDefaultsHelpFormatter,
+                                     help="Merges multiple images into one image",
+                                     description="img merge output.png --save method=6 --save quality=70"
+                                                 " 2x1 left.png right.png")
+merge_parser.set_defaults(cmd=__cmd__.merge.__cmd__)
+merge_parser.add_argument('-y', '--yes', action='store_true', default=False,
+                          help="Overwrite output if it exists")
+merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='save_args', default=[],
+                          help="Additional arguments to the PIL.Image.Image.save() method")
+merge_parser.add_argument('output',
+                          help="Output file to write to")
+merge_parser.add_argument('dimensions',
+                          help="Dimensions of the output image (not in pixels) (eg 2x2)")
+merge_parser.add_argument('images', nargs=ap.ONE_OR_MORE,
+                          help="Input Images to merge")
+
 
 scrape_parser = subparsers.add_parser("scrape", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                       help="Scrapes images from given URL")
@@ -56,6 +75,7 @@ scrape_parser.add_argument('-H', '--height',
                            help="specify height (eg '>500')")
 scrape_parser.add_argument("site",
                            help="Site to scrape").completer = argcomplete.completers.SuppressCompleter()
+
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                    help="Similar to the `wget` program. Used to download provided images")
