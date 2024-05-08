@@ -29,7 +29,7 @@ def __cmd__(site: T_URL, linked: bool, width: t.Optional[SizeComparison], height
         response = requests.get(site, headers=dict(headers), timeout=timeout)
         response.raise_for_status()
         content_type = response.headers.get('Content-Type', "")
-        if content_type != "text/html":
+        if not content_type.startswith("text/html"):
             console.print(f"[yellow]Bad Content-Type ({content_type!r})[/]")
 
         html: str = response.content
