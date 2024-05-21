@@ -26,6 +26,7 @@ def __cmd__(site: T_URL, linked: bool, width: t.Optional[SizeComparison], height
     def gen():
         nonlocal site
 
+        console.print(f"Fetching contents of {escape(site)}")
         response = requests.get(site, headers=dict(headers), timeout=timeout)
         response.raise_for_status()
         content_type = response.headers.get('Content-Type', "")
@@ -34,6 +35,7 @@ def __cmd__(site: T_URL, linked: bool, width: t.Optional[SizeComparison], height
 
         html: str = response.content
 
+        console.print(f"Analyzing html of {escape(site)}")
         soup = bs4.BeautifulSoup(html, 'html.parser')
         urls: t.List[str] = []
         if linked:
@@ -47,6 +49,7 @@ def __cmd__(site: T_URL, linked: bool, width: t.Optional[SizeComparison], height
                 urls.append(url)
 
         urls = [url for url in urls if url.startswith("http")]
+        console.print(f"Found {len(urls)} urls")
 
         for url in urls:
             response = requests.get(url=url, stream=True, headers=dict(headers), timeout=timeout)

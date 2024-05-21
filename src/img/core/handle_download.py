@@ -51,4 +51,4 @@ def handle_download(response: 'requests.Response', head: t.Optional[bytes], prog
     filepath.unlink(missing_ok=True)  # remove old
     tmpfile.rename(filepath)  # tmpfile -> file
     progress.remove_task(task_id)  # remove now unnecessary progress bar
-    progress.console.print(f"{escape(filepath.name)} is done")  # but keep a log
+    progress.console.print(f"{escape(filepath.name)}: download completed")  # but keep a log
