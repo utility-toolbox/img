@@ -7,10 +7,11 @@ import threading
 import typing as t
 
 
-__all__ = ['CatchSignInt']
+__all__ = ['CatchSigInt']
 
 
-class CatchSignInt:
+class CatchSigInt:
+    _old_handler: t.Optional[t.Callable] = None
     _event: t.Optional['threading.Event'] = None
 
     def __enter__(self) -> 'threading.Event':
@@ -23,11 +24,11 @@ class CatchSignInt:
         self._event = None
 
     def _override_handler(self):
+        self._old_handler = signal.getsignal(signal.SIGINT)
         signal.signal(signal.SIGINT, self._handler)
 
     def _handler(self, _signum, _frame):
         self._event.set()
 
-    @staticmethod
-    def _restore_handler():
-        signal.signal(signal.SIGINT, signal.default_int_handler)
+    def _restore_handler(self):
+        signal.signal(signal.SIGINT, self._old_handler)

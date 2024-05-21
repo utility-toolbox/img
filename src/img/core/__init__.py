@@ -2,5 +2,5 @@
 r"""
 
 """
-from .catch_sigint import CatchSignInt
+from .catch_sigint import CatchSigInt
 from .downloader import *

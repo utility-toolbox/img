@@ -7,7 +7,7 @@ import typing as t
 from .._typing import *
 from ..util import get_progress_columns
 from ..constants import FileConflictStrategy
-from .catch_sigint import CatchSignInt
+from .catch_sigint import CatchSigInt
 from .handle_download import handle_download
 
 
@@ -21,7 +21,7 @@ def downloader(gen: t.Iterator[T_GENITEM], concurrent: int = 4,
     from concurrent.futures import ThreadPoolExecutor, Future
 
     with (
-        CatchSignInt() as canceled,
+        CatchSigInt() as canceled,
         rich.progress.Progress(*get_progress_columns(),
                                auto_refresh=True, refresh_per_second=5, expand=True) as progress,
         ThreadPoolExecutor(max_workers=concurrent) as pool,
