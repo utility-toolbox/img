@@ -16,7 +16,7 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
     import statistics
     from pathlib import Path
     from contextlib import ExitStack
-    from PIL import Image
+    from PIL import Image  # note: Pillow is installed into the archive
 
     output = Path(output)
     if output.exists():
