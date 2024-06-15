@@ -4,7 +4,8 @@ r"""
 """
 from . import (
     collect,
-    scrape,
     merge,
+    resize,
+    scrape,
     wget,
 )
