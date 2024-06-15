@@ -32,7 +32,11 @@ def parse_keyval(keyval: str):
     key, sep, val = keyval.partition('=')
     if not sep:
         raise ValueError(f"Invalid key-value format (expected 'key=value' got {keyval!r})")
-    return key, literal_eval(val)
+    try:
+        val = literal_eval(val)
+    except (ValueError, SyntaxError):
+        pass
+    return key, val
 
 
 class AutocompleteAction(ap.Action):

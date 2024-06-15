@@ -52,7 +52,10 @@ merge_parser.set_defaults(cmd=__cmd__.merge.__cmd__)
 merge_parser.add_argument('-y', '--yes', action='store_true', default=False,
                           help="Overwrite output if it exists")
 merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='save_args', default=[],
-                          help="Additional arguments to the PIL.Image.Image.save() method")
+                          help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
+                               " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
+merge_parser.add_argument('--mode', default='RGB',
+                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
 merge_parser.add_argument('output',
                           help="Output file to write to")
 merge_parser.add_argument('dimensions',

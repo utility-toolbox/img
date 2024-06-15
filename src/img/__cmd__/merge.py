@@ -9,9 +9,9 @@ __all__ = ['__cmd__']
 
 
 def __cmd__(output: str, dimensions: str, images: t.List[str],
-            yes: bool, save_args: t.List[t.Tuple[str, t.Any]]):
+            yes: bool, mode: str, save_args: t.List[t.Tuple[str, t.Any]]):
     r"""
-    img merge -o output.jpg 2x1 left.jpg right.jpg
+    img merge output.jpg 2x1 left.jpg right.jpg
     """
     import statistics
     from pathlib import Path
@@ -41,7 +41,7 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
         total_width = n_width * average_width
         total_height = n_height * average_height
 
-        with Image.new('RGBA', (total_width, total_height)) as image:
+        with Image.new(mode=mode, size=(total_width, total_height)) as image:
             for i, img in enumerate(images):
                 x, y = int((i % n_width) * average_width), int((i // n_width) * average_height)
                 image.paste(img, (x, y))
