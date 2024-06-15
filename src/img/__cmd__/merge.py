@@ -17,6 +17,7 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
     from pathlib import Path
     from contextlib import ExitStack
     from PIL import Image  # note: Pillow is installed into the archive
+    from ..util import split_dimensions
 
     output = Path(output)
     if output.exists():
@@ -46,11 +47,3 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
                 x, y = int((i % n_width) * average_width), int((i // n_width) * average_height)
                 image.paste(img, (x, y))
             image.save(output, **dict(save_args))
-
-
-def split_dimensions(dimension: str) -> t.Tuple[int, int]:
-    import re
-    match = re.search(r'(\d+)x(\d+)', dimension)
-    if match is None:
-        raise ValueError(f'Invalid dimension: {dimension} (expected: 0x0)')
-    return int(match.group(1)), int(match.group(2))
