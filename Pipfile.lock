@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1040a10a82483278ee023fc667d2e40732b49e9a5ec3bf732d8c6c82d55ee09b"
+            "sha256": "1f60ab7d583937de7adf9a91eedfba9aaa5fd6481932142e9c4e199dcfa4abad"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,15 +16,6 @@
         ]
     },
     "default": {
-        "argcomplete": {
-            "hashes": [
-                "sha256:c168c3723482c031df3c207d4ba8fa702717ccb9fc0bfe4117166c1f537b4a54",
-                "sha256:fd03ff4a5b9e6580569d34b273f741e85cd9e072f3feeeee3eba4891c70eda62"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==3.3.0"
-        },
         "beautifulsoup4": {
             "hashes": [
                 "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051",
@@ -188,6 +179,15 @@
             "markers": "python_full_version >= '3.7.0'",
             "version": "==13.7.1"
         },
+        "shell-complete": {
+            "hashes": [
+                "sha256:7fe25973df50198bd4c7a22a824be30f6a31c029c22eccf7fc42fb18b51f13f0",
+                "sha256:df57592382d889f6bb0d5daffeffb743e5e82d946c47806f38d97aa4261c4fb2"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==0.2.0"
+        },
         "soupsieve": {
             "hashes": [
                 "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690",
@@ -198,11 +198,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:450b20ec296a467077128bff42b73080516e71b56ff59a60a02bef2232c4fa9d",
-                "sha256:d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+                "sha256:a448b2f64d686155468037e1ace9f2d2199776e17f0a46610480d311f73e3472",
+                "sha256:dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.2.1"
+            "version": "==2.2.2"
         }
     },
     "develop": {
@@ -230,6 +230,15 @@
             "index": "pypi",
             "markers": "python_version >= '3.6'",
             "version": "==0.5.0"
+        },
+        "shell-complete": {
+            "hashes": [
+                "sha256:7fe25973df50198bd4c7a22a824be30f6a31c029c22eccf7fc42fb18b51f13f0",
+                "sha256:df57592382d889f6bb0d5daffeffb743e5e82d946c47806f38d97aa4261c4fb2"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==0.2.0"
         }
     }
 }
