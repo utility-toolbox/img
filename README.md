@@ -155,8 +155,10 @@ To get shell-completion you have to add the following line at the end of your `~
 eval "$(img --shell-complete)"
 ```
 
+<!--
 > [!CAUTION]
 > This above is for bash.
 > If you use another shell (zsh, tcsh, fish or powershell)
 > then `img --shellcomplete <shell>` can still generate valid shell-code
 > that can be executed via the others shell equivalent of eval.
+-->
