@@ -3,7 +3,7 @@ r"""
 cli to automatically download a collection of images or scrape them from a website
 """
 import argparse as ap
-from shell_complete import ShellCompleteAction, types
+from shell_complete import ShellCompleteAction, Recommended as ShellRecommended, types
 from . import __version__, __cmd__, constants
 from .__cli_util__ import *
 
@@ -27,8 +27,7 @@ parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFo
 parser.set_defaults(cmd=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version=__version__)
 parser.add_argument('--shell-complete', action=ShellCompleteAction,
-                    # help="Generates an auto-complete shell script. Use with `eval \"$(...)\"`")
-                    help=ap.SUPPRESS)
+                    help="Generates an auto-complete shell script. Use with `eval \"$(img --shell-complete)\"`")
 subparsers = parser.add_subparsers()
 
 
@@ -55,7 +54,8 @@ merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='sa
                           help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 merge_parser.add_argument('--mode', default='RGB',
-                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
+                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+        .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
 merge_parser.add_argument('output', type=types.file,
                           help="Output file to write to")
 merge_parser.add_argument('dimensions',
