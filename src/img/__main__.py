@@ -47,8 +47,7 @@ collect_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
 
 merge_parser = subparsers.add_parser("merge", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                      help="Merges multiple images into one image",
-                                     description="img merge output.png --save method=6 --save quality=70"
-                                                 " 2x1 left.png right.png")
+                                     epilog="img merge output.png --save method=6 2x1 left.png right.png")
 merge_parser.set_defaults(cmd=__cmd__.merge.__cmd__)
 merge_parser.add_argument('-y', '--yes', action='store_true', default=False,
                           help="Overwrite output if it exists")
@@ -57,37 +56,37 @@ merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='sa
                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 merge_parser.add_argument('--mode', default='RGB',
                           help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
-        .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
+    .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
 merge_parser.add_argument('output', type=types.file,
                           help="Output file to write to")
-merge_parser.add_argument('dimensions',
+merge_parser.add_argument('dimensions', type=split_dimensions,
                           help="Dimensions of the output image (not in pixels) (eg 2x2)")
 merge_parser.add_argument('images', type=types.file, nargs=ap.ONE_OR_MORE,
                           help="Input Images to merge")
 
 #
 
-resize_parser = subparsers.add_parser("resize", formatter_class=ap.ArgumentDefaultsHelpFormatter,
-                                      help="Resizes an image",
-                                      description="img resize input.jpg 1000x1000 output.png --new-mode RGB"
-                                                  " --thumbnail --save method=6")
-resize_parser.set_defaults(cmd=__cmd__.resize.__cmd__)
-resize_parser.add_argument('-y', '--yes', action='store_true', default=False,
-                           help="Overwrite output if it exists")
-resize_parser.add_argument('--save', action='append', type=parse_keyval, dest='save_args', default=[],
-                           help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
-                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
-resize_parser.add_argument('--new-mode',
-                           help="May be needed to convert an image with alpha layer to one without."
-                                " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
-resize_parser.add_argument('--thumbnail', action=ap.BooleanOptionalAction,
-                           help="Keep aspect while resizing and don't grow in size (only scale down)")
-resize_parser.add_argument('source',
-                           help="Source image to resize")
-resize_parser.add_argument('dimensions',
-                           help="Dimensions of the output image (in pixels) (eg 1000x1000)")
-resize_parser.add_argument('output',
-                           help="Output file to write to")
+repack = subparsers.add_parser("repack", formatter_class=ap.ArgumentDefaultsHelpFormatter,
+                               help="Repacks an image to a different format or size",
+                               epilog="img repack input.jpg output.png --size -1:480 --mode RGB --save method=6")
+repack.set_defaults(cmd=__cmd__.repack.__cmd__)
+repack.add_argument('-y', '--yes', action='store_true', default=False,
+                    help="Overwrite output if it exists")
+repack.add_argument('--save', action='append', type=parse_keyval, dest='save_args', default=[],
+                    help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
+                         " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
+repack.add_argument('--mode',
+                    help="In case you need to convert an image with alpha layer (e.g. png) to one without (e.g. jpeg)."
+                         " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
+repack_size_group = repack.add_mutually_exclusive_group()
+repack_size_group.add_argument('--size', type=split_dimensions,
+                               help="Specify the new image size. use -1 for width or height to keep the aspect")
+repack_size_group.add_argument('--thumbnail', type=split_dimensions,
+                               help="Keep aspect while resizing and don't grow in size (only scale down)")
+repack.add_argument('source',
+                    help="Source image to resize")
+repack.add_argument('output',
+                    help="Output file to write to")
 
 #
 

@@ -5,7 +5,7 @@ r"""
 from . import (
     collect,
     merge,
-    resize,
+    repack,
     scrape,
     wget,
 )
