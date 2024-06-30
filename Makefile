@@ -4,7 +4,9 @@ default: build
 
 #prefix=/usr
 prefix=$(HOME)/.local
+build=$(prefix)/share/toolbox-img
 executable=$(prefix)/bin/img
+completion=$(build)/img.completion.bash
 manpage=$(prefix)/share/man/man1/img.1
 
 help:
@@ -26,11 +28,15 @@ build/img.1: docs/img.1.md
 	@bash ./scripts/make-manpage.sh
 
 install: | build uninstall
-	cp build/img "${executable}"
+	cp -r build/img "${build}"
+	ln -s "${build}/img" "${executable}"
+	"${executable}" --shell-completion > "${completion}"
 	cp build/img.1 "${manpage}"
 
 uninstall:
 	rm -f "${executable}"
+	rm -rf "${build}"
+	rm -f "${completion}"
 	rm -f "${manpage}"
 
 clean:
