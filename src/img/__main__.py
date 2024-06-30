@@ -55,7 +55,9 @@ merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='sa
                           help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 merge_parser.add_argument('--mode', default='RGB',
-                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+                          help="In case you need to convert an image with alpha layer (e.g. png)"
+                               " to one without (e.g. jpeg)."
+                               " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
     .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
 merge_parser.add_argument('output', type=types.file,
                           help="Output file to write to")
@@ -77,7 +79,8 @@ repack.add_argument('--save', action='append', type=parse_keyval, dest='save_arg
                          " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 repack.add_argument('--mode',
                     help="In case you need to convert an image with alpha layer (e.g. png) to one without (e.g. jpeg)."
-                         " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
+                         " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+    .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
 repack_size_group = repack.add_mutually_exclusive_group()
 repack_size_group.add_argument('--size', type=split_dimensions,
                                help="Specify the new image size. use -1 for width or height to keep the aspect")
