@@ -3,12 +3,13 @@ r"""
 
 """
 import typing as t
+from .._typing import T_DIMENSIONS
 
 
 __all__ = ['__cmd__']
 
 
-def __cmd__(output: str, dimensions: str, images: t.List[str],
+def __cmd__(output: str, dimensions: T_DIMENSIONS, images: t.List[str],
             yes: bool, mode: str, save_args: t.List[t.Tuple[str, t.Any]]):
     r"""
     img merge output.jpg 2x1 left.jpg right.jpg
@@ -17,7 +18,6 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
     from pathlib import Path
     from contextlib import ExitStack
     from PIL import Image  # note: Pillow is installed into the archive
-    from ..util import split_dimensions
 
     output = Path(output)
     if output.exists():
@@ -26,7 +26,7 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
         if not yes:
             raise FileExistsError(f'Output file "{output!s}" already exists.')
 
-    n_width, n_height = split_dimensions(dimensions)
+    n_width, n_height = dimensions
     if len(images) != n_width * n_height:
         raise SyntaxError("Bad amount of images passed")
 
