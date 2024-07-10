@@ -7,10 +7,10 @@ name = "pypi"
 beautifulsoup4 = "*"
 rich = "*"
 requests = "*"
-argcomplete = "*"
 
 [dev-packages]
 roff = "*"
+shell-complete = "*"
 
 [requires]
 python_version = "3.10"

@@ -3,7 +3,7 @@ r"""
 cli to automatically download a collection of images or scrape them from a website
 """
 import argparse as ap
-import argcomplete
+from shell_complete import ShellCompleteAction, Recommended as ShellRecommended, types
 from . import __version__, __cmd__, constants
 from .__cli_util__ import *
 
@@ -26,9 +26,8 @@ def add_common_headers(p: ap.ArgumentParser) -> None:
 parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter, description=__doc__)
 parser.set_defaults(cmd=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version=__version__)
-parser.add_argument('--shell-complete', action=AutocompleteAction,
-                    # help="Generates an auto-complete shell script. Use with `eval \"$(...)\"`")
-                    help=ap.SUPPRESS)
+parser.add_argument('--shell-complete', action=ShellCompleteAction,
+                    help="Generates an auto-complete shell script. Use with `eval \"$(img --shell-complete)\"`")
 subparsers = parser.add_subparsers()
 
 
@@ -41,7 +40,7 @@ add_common_headers(p=collect_parser)
 collect_parser.add_argument('--max-skip', type=int, default=0,
                             help="How many url can be failing before stopping searching")
 collect_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
-                            help="URLs to collect from").completer = argcomplete.completers.SuppressCompleter()
+                            help="URLs to collect from")
 
 
 merge_parser = subparsers.add_parser("merge", formatter_class=ap.ArgumentDefaultsHelpFormatter,
@@ -55,12 +54,13 @@ merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='sa
                           help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 merge_parser.add_argument('--mode', default='RGB',
-                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)")
-merge_parser.add_argument('output',
+                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+        .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
+merge_parser.add_argument('output', type=types.file,
                           help="Output file to write to")
 merge_parser.add_argument('dimensions',
                           help="Dimensions of the output image (not in pixels) (eg 2x2)")
-merge_parser.add_argument('images', nargs=ap.ONE_OR_MORE,
+merge_parser.add_argument('images', type=types.file, nargs=ap.ONE_OR_MORE,
                           help="Input Images to merge")
 
 
@@ -77,7 +77,7 @@ scrape_parser.add_argument('-H', '--height',
                            type=constants.SizeComparison, nargs=ap.OPTIONAL, const=">1000",
                            help="specify height (eg '>500')")
 scrape_parser.add_argument("site",
-                           help="Site to scrape").completer = argcomplete.completers.SuppressCompleter()
+                           help="Site to scrape")
 
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter,
@@ -85,7 +85,7 @@ get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHel
 get_parser.set_defaults(cmd=__cmd__.wget.__cmd__)
 add_common_headers(p=get_parser)
 get_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
-                        help="URLs to download").completer = argcomplete.completers.SuppressCompleter()
+                        help="URLs to download")
 
 
 def main():
@@ -95,5 +95,4 @@ def main():
 
 
 if __name__ == '__main__':
-    argcomplete.autocomplete(parser)
     main()

@@ -9,93 +9,12 @@ cli to automatically download a collection of images or scrape them from a websi
 
 <!-- TOC -->
 * [img](#img)
-  * [Help](#help)
-    * [`img`](#img-1)
-    * [`img collect`](#img-collect)
-    * [`img get`](#img-get)
   * [Installation](#installation)
   * [Updating](#updating)
   * [Uninstall / Cleanup](#uninstall--cleanup)
   * [Shell-Autocompletion](#shell-autocompletion)
+  * [Help](#help)
 <!-- TOC -->
-
-## Help
-
-> [!WARNING]
-> Help may be outdated. Use `img --help` and `img <cmd> --help`.
-
-### `img`
-
-```text
-usage: img [-h] [-v] {collect,get} ...
-
-positional arguments:
-  {collect,get}
-    collect      Collects images. Manually add 1+ {0} to specify which numbers should increment for the next url
-    get          similar to the `wget` program. used to download provided images
-
-options:
-  -h, --help     show this help message and exit
-  -v, --version  show program's version number and exit
-```
-
-### `img collect`
-
-```text
-usage: img collect [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--max-skip MAX_SKIP] urls [urls ...]
-
-positional arguments:
-  urls                  URLs to collect from
-
-options:
-  -h, --help            show this help message and exit
-  -c CONCURRENT, --concurrent CONCURRENT
-                        Number of concurrent downloads (default: 3)
-  --on-conflict {rename,skip,replace}
-                        How to handle conflict of filenames during download (default: rename)
-  --max-skip MAX_SKIP   How many url can be failing before stopping searching (default: 0)
-```
-
-### `img scrape`
-
-```text
-usage: img scrape [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] [--timeout TIMEOUT] [--header HEADERS] [--referer HEADERS] [-l | --linked | --no-linked] [-W [WIDTH]] [-H [HEIGHT]] site
-
-positional arguments:
-  site                  Site to scrape
-
-options:
-  -h, --help            show this help message and exit
-  -c CONCURRENT, --concurrent CONCURRENT
-                        Number of concurrent downloads (default: 3)
-  --on-conflict {rename,skip,replace}
-                        How to handle conflict of filenames during download (default: rename)
-  --timeout TIMEOUT     Specify timeout. Either 'x.y' for general timeout or 'a.b:c.d' for connect:read timeouts (default: (10, 30))
-  --header HEADERS      Add an additional header (default: [])
-  --referer HEADERS     Add the referer header (default: None)
-  -l, --linked, --no-linked
-                        whether to attempt to download <a href="..."><img/></a> urls (default: None)
-  -W [WIDTH], --width [WIDTH]
-                        specify width (eg '>500') (default: None)
-  -H [HEIGHT], --height [HEIGHT]
-                        specify height (eg '>500') (default: None)
-```
-
-### `img get`
-
-```text
-usage: img get [-h] [-c CONCURRENT] [--on-conflict {rename,skip,replace}] urls [urls ...]
-
-positional arguments:
-  urls                  URLs to download
-
-options:
-  -h, --help            show this help message and exit
-  -c CONCURRENT, --concurrent CONCURRENT
-                        Number of concurrent downloads (default: 3)
-  --on-conflict {rename,skip,replace}
-                        How to handle conflict of filenames during download (default: rename)
-```
 
 ## Installation
 
@@ -155,8 +74,33 @@ To get shell-completion you have to add the following line at the end of your `~
 eval "$(img --shell-complete)"
 ```
 
+<!--
 > [!CAUTION]
 > This above is for bash.
 > If you use another shell (zsh, tcsh, fish or powershell)
 > then `img --shellcomplete <shell>` can still generate valid shell-code
 > that can be executed via the others shell equivalent of eval.
+-->
+
+## Help
+
+> [!WARNING]
+> Help may be outdated. Use `img --help` and `img <cmd> --help`.
+
+```text
+usage: img [-h] [-v] {collect,merge,scrape,get} ...
+
+cli to automatically download a collection of images or scrape them from a website
+
+positional arguments:
+  {collect,merge,scrape,get}
+    collect             Collects images
+    merge               Merges multiple images into one image
+    scrape              Scrapes images from given URL
+    get                 Similar to the `wget` program. Used to download provided images
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  --shell-complete      Generates an auto-complete shell script. Use with `eval "$(img --shell-complete)"`
+```
