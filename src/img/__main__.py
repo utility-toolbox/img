@@ -26,8 +26,8 @@ def add_common_headers(p: ap.ArgumentParser) -> None:
 parser = ap.ArgumentParser(prog="img", formatter_class=ap.ArgumentDefaultsHelpFormatter, description=__doc__)
 parser.set_defaults(cmd=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version=__version__)
-parser.add_argument('--shell-complete', action=ShellCompleteAction,
-                    help="Generates an auto-complete shell script. Use with `eval \"$(img --shell-complete)\"`")
+parser.add_argument('--shell-completion', action=ShellCompleteAction,
+                    help="Generates an auto-complete shell script. Use with `eval \"$(img --shell-completion)\"`")
 subparsers = parser.add_subparsers()
 
 #

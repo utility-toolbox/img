@@ -10,4 +10,4 @@ fi
 
 SOURCE="$THIS/src/"
 
-PYTHONPATH="$PYTHONPATH:$SOURCE" "$PYTHON3" -X utf8 -X faulthandler -BO -m img "$@"
+PYTHONPATH="$SOURCE:$PYTHONPATH" "$PYTHON3" -X utf8 -X faulthandler -BO -m img "$@"
