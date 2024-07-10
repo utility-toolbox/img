@@ -4,15 +4,14 @@ set -e
 cd "$(realpath "$(dirname "$(realpath "$0")")/..")"
 
 function log() {
-    echo -e "\e[36m$*\e[39m"
+    >&2 echo -e "\e[36m$*\e[39m"
 }
 
 mkdir -p "build/"
 
 log "Cleanup of previous build files"
-[[ -f build/img ]] && rm build/img
+[[ -d build/img ]] && rm -rf build/img
 [[ -f build/requirements.txt ]] && rm build/requirements.txt
-[[ -d build/src/ ]] && rm -rf build/src/
 
 PIPENV_GOT_INSTALLED=false
 if  ! command -v pipenv &> /dev/null; then
@@ -30,20 +29,25 @@ if [ $PIPENV_GOT_INSTALLED = true ]; then
 fi
 
 log "Copying source code"
-mkdir -p build/src
-cp -r src/img/ build/src/code/
+mkdir -p build/img/
+cp -r src/img/ build/img/img/
 
 log "Installing dependencies into build"
-python3 -m pip install --isolated --no-input --disable-pip-version-check --requirement build/requirements.txt --target build/src/ --no-compile
-rm -rf build/src/*.dist-info
+python3 -m pip install --isolated --no-input --disable-pip-version-check --requirement build/requirements.txt --target build/img/
+rm -rf build/img/*.dist-info
 
 log "Removing unnecessary packages"
-rm -rf build/src/bin/  # executables/scripts
-rm -rf build/src/pygments/  # syntax highlighting
-rm -rf build/src/markdown_it/  # markdown parser
-rm -rf build/src/urllib3/  # builtin urllib is enough
-rm -rf build/src/bs4/tests/
+rm -rf build/img/bin/  # executables/scripts
+rm -rf build/img/pygments/  # syntax highlighting
+rm -rf build/img/markdown_it/  # markdown parser
+rm -rf build/img/urllib3/  # builtin urllib is enough
+rm -rf build/img/bs4/tests/
 
 log "Creating executable build"
-python3 -m zipapp --compress --python "/usr/bin/env -S python3 -X utf8 -X faulthandler -B -O" build/src/ --main code.__main__:main --output build/img
-chmod +x build/img
+# shellcheck disable=SC2016
+echo '#!/usr/bin/env bash
+set -e
+THIS="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+PYTHONPATH="$THIS:$PYTHONPATH" python3 -X utf8 -X faulthandler -BO -m img "$@"
+' > build/img/img.sh
+chmod +x build/img/img.sh
