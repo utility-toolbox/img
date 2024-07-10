@@ -86,9 +86,9 @@ repack_size_group.add_argument('--size', type=split_dimensions,
                                help="Specify the new image size. use -1 for width or height to keep the aspect")
 repack_size_group.add_argument('--thumbnail', type=split_dimensions,
                                help="Keep aspect while resizing and don't grow in size (only scale down)")
-repack.add_argument('source',
+repack.add_argument('source', type=types.file,
                     help="Source image to resize")
-repack.add_argument('output',
+repack.add_argument('output', type=types.file,
                     help="Output file to write to")
 
 #
