@@ -30,6 +30,7 @@ parser.add_argument('--shell-completion', action=ShellCompleteAction,
                     help="Generates an auto-complete shell script. Use with `eval \"$(img --shell-completion)\"`")
 subparsers = parser.add_subparsers()
 
+#
 
 collect_parser = subparsers.add_parser("collect", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                        help="Collects images",
@@ -42,11 +43,11 @@ collect_parser.add_argument('--max-skip', type=int, default=0,
 collect_parser.add_argument("urls", nargs=ap.ONE_OR_MORE,
                             help="URLs to collect from")
 
+#
 
 merge_parser = subparsers.add_parser("merge", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                      help="Merges multiple images into one image",
-                                     description="img merge output.png --save method=6 --save quality=70"
-                                                 " 2x1 left.png right.png")
+                                     epilog="img merge output.png --save method=6 2x1 left.png right.png")
 merge_parser.set_defaults(cmd=__cmd__.merge.__cmd__)
 merge_parser.add_argument('-y', '--yes', action='store_true', default=False,
                           help="Overwrite output if it exists")
@@ -54,15 +55,43 @@ merge_parser.add_argument('--save', action='append', type=parse_keyval, dest='sa
                           help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
                                " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
 merge_parser.add_argument('--mode', default='RGB',
-                          help="Image mode. (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
-        .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
+                          help="In case you need to convert an image with alpha layer (e.g. png)"
+                               " to one without (e.g. jpeg)."
+                               " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+    .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
 merge_parser.add_argument('output', type=types.file,
                           help="Output file to write to")
-merge_parser.add_argument('dimensions',
+merge_parser.add_argument('dimensions', type=split_dimensions,
                           help="Dimensions of the output image (not in pixels) (eg 2x2)")
 merge_parser.add_argument('images', type=types.file, nargs=ap.ONE_OR_MORE,
                           help="Input Images to merge")
 
+#
+
+repack = subparsers.add_parser("repack", formatter_class=ap.ArgumentDefaultsHelpFormatter,
+                               help="Repacks an image to a different format or size",
+                               epilog="img repack input.jpg output.png --size -1:480 --mode RGB --save method=6")
+repack.set_defaults(cmd=__cmd__.repack.__cmd__)
+repack.add_argument('-y', '--yes', action='store_true', default=False,
+                    help="Overwrite output if it exists")
+repack.add_argument('--save', action='append', type=parse_keyval, dest='save_args', default=[],
+                    help="Additional arguments to the PIL.Image.Image.save() method in format of 'key=value'."
+                         " (https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html)")
+repack.add_argument('--mode',
+                    help="In case you need to convert an image with alpha layer (e.g. png) to one without (e.g. jpeg)."
+                         " (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)") \
+    .completer = ShellRecommended("RGB", "RGBA", "1", "L", "CMYK", "LAB", "HSV")
+repack_size_group = repack.add_mutually_exclusive_group()
+repack_size_group.add_argument('--size', type=split_dimensions,
+                               help="Specify the new image size. use -1 for width or height to keep the aspect")
+repack_size_group.add_argument('--thumbnail', type=split_dimensions,
+                               help="Keep aspect while resizing and don't grow in size (only scale down)")
+repack.add_argument('source',
+                    help="Source image to resize")
+repack.add_argument('output',
+                    help="Output file to write to")
+
+#
 
 scrape_parser = subparsers.add_parser("scrape", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                       help="Scrapes images from given URL")
@@ -79,6 +108,7 @@ scrape_parser.add_argument('-H', '--height',
 scrape_parser.add_argument("site",
                            help="Site to scrape")
 
+#
 
 get_parser = subparsers.add_parser("get", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                    help="Similar to the `wget` program. Used to download provided images")

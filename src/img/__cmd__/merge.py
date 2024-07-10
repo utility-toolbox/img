@@ -3,12 +3,13 @@ r"""
 
 """
 import typing as t
+from .._typing import T_DIMENSIONS
 
 
 __all__ = ['__cmd__']
 
 
-def __cmd__(output: str, dimensions: str, images: t.List[str],
+def __cmd__(output: str, dimensions: T_DIMENSIONS, images: t.List[str],
             yes: bool, mode: str, save_args: t.List[t.Tuple[str, t.Any]]):
     r"""
     img merge output.jpg 2x1 left.jpg right.jpg
@@ -25,7 +26,7 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
         if not yes:
             raise FileExistsError(f'Output file "{output!s}" already exists.')
 
-    n_width, n_height = split_dimensions(dimensions)
+    n_width, n_height = dimensions
     if len(images) != n_width * n_height:
         raise SyntaxError("Bad amount of images passed")
 
@@ -46,11 +47,3 @@ def __cmd__(output: str, dimensions: str, images: t.List[str],
                 x, y = int((i % n_width) * average_width), int((i // n_width) * average_height)
                 image.paste(img, (x, y))
             image.save(output, **dict(save_args))
-
-
-def split_dimensions(dimension: str) -> t.Tuple[int, int]:
-    import re
-    match = re.search(r'(\d+)x(\d+)', dimension)
-    if match is None:
-        raise ValueError(f'Invalid dimension: {dimension} (expected: 0x0)')
-    return int(match.group(1)), int(match.group(2))
