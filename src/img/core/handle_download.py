@@ -38,17 +38,23 @@ def handle_download(response: 'requests.Response', head: t.Optional[bytes], prog
     task_id: rich.progress.TaskID\
         = progress.add_task(description=filepath.name, start=True, total=extract_content_size(response))
 
-    with open(tmpfile, 'wb') as file:
-        if head:
-            file.write(head)
-        for chunk in response.iter_content(chunk_size=1024*10):
-            if canceled.is_set():
-                tmpfile.unlink(missing_ok=True)  # is this a problem with file.close()?
-                return
-            progress.update(task_id, advance=len(chunk))
-            file.write(chunk)
+    try:
+        with open(tmpfile, 'wb') as file:
+            if head:
+                file.write(head)
+            for chunk in response.iter_content(chunk_size=1024*10):
+                if canceled.is_set():
+                    tmpfile.unlink(missing_ok=True)  # is this a problem with file.close()?
+                    return
+                progress.update(task_id, advance=len(chunk))
+                file.write(chunk)
+    except Exception as exc:
+        tmpfile.unlink(missing_ok=True)
+        progress.console.print(f"{escape(filepath.name)}: download failed ({type(exc)}: {exc})")  # keep a log
+        return
+    finally:
+        progress.remove_task(task_id)  # remove now unnecessary progress bar
 
     filepath.unlink(missing_ok=True)  # remove old
     tmpfile.rename(filepath)  # tmpfile -> file
-    progress.remove_task(task_id)  # remove now unnecessary progress bar
-    progress.console.print(f"{escape(filepath.name)}: download completed")  # but keep a log
+    progress.console.print(f"{escape(filepath.name)}: download completed")  # keep a log
