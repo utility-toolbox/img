@@ -3,7 +3,6 @@ r"""
 
 """
 import threading
-import typing as t
 from .._typing import *
 from ..util import get_progress_columns
 from ..constants import FileConflictStrategy
@@ -14,7 +13,7 @@ from .handle_download import handle_download
 __all__ = ['downloader']
 
 
-def downloader(gen: t.Iterator[T_GENITEM], concurrent: int = 4,
+def downloader(gen: T_GEN, concurrent: int = 4,
                on_conflict: 'FileConflictStrategy' = FileConflictStrategy.rename):
     import rich.progress
     import rich.traceback
@@ -27,6 +26,8 @@ def downloader(gen: t.Iterator[T_GENITEM], concurrent: int = 4,
         ThreadPoolExecutor(max_workers=concurrent) as pool,
     ):
         counter = threading.Semaphore(concurrent)
+        if callable(gen):
+            gen = gen(canceled)
         for response, head in gen:
             while not counter.acquire(timeout=0.1) and not canceled.is_set():
                 pass
