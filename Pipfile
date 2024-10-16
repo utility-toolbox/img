@@ -9,6 +9,7 @@ rich = "*"
 requests = "*"
 pillow = "*"
 shell-complete = "*"
+pyperclip = "*"
 
 [dev-packages]
 roff = "*"

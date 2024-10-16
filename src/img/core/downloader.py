@@ -29,7 +29,7 @@ def downloader(gen: t.Iterator[T_GENITEM], concurrent: int = 4,
         counter = threading.Semaphore(concurrent)
         for response, head in gen:
             while not counter.acquire(timeout=0.1) and not canceled.is_set():
-                pass
+                pass  # wait
             if canceled.is_set():
                 break
 
