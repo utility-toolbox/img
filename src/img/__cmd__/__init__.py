@@ -3,6 +3,7 @@ r"""
 
 """
 from . import (
+    clipboard_watch,
     collect,
     merge,
     repack,

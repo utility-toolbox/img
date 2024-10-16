@@ -32,6 +32,19 @@ subparsers = parser.add_subparsers()
 
 #
 
+
+clipboard_watch_parser = subparsers.add_parser('clipboard-watch', formatter_class=ap.ArgumentDefaultsHelpFormatter,
+                                               help="Watches the clipboard for copied urls and downloads them",
+                                               description="Start this in the terminal and go copy the urls."
+                                                           " img will watch your clipboard for changes and downloads them.")
+clipboard_watch_parser.set_defaults(cmd=__cmd__.clipboard_watch.__cmd__)
+add_common_headers(p=clipboard_watch_parser)
+clipboard_watch_parser.add_argument('-p', '--pause', type=float, default=0.1,
+                                    help="Pause between checking the clipboard for changes")
+
+
+#
+
 collect_parser = subparsers.add_parser("collect", formatter_class=ap.ArgumentDefaultsHelpFormatter,
                                        help="Collects images",
                                        description="Manually add one or more {0} to specify which numbers"
